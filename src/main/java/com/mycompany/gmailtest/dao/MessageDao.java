@@ -9,6 +9,7 @@ import com.mycompany.gmailtest.dto.Message;
 import com.mycompany.gmailtest.util.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -51,7 +52,21 @@ public class MessageDao {
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             Transaction tx = session.beginTransaction();
-            session.createQuery("DELETE FROM Message").executeUpdate();
+            session.createQuery("delete from Message").executeUpdate();
+            tx.commit();
+            session.close();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public void deleteMessage(String id) {
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Transaction tx = session.beginTransaction();
+            Query query = session.createQuery("delete Message where message_id = :messageId");
+            query.setParameter("messageId", id);
+            query.executeUpdate();
             tx.commit();
             session.close();
         } catch (Exception e) {

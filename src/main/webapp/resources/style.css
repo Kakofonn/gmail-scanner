@@ -1,0 +1,79 @@
+html, body {
+    height: 100%;
+}
+
+.tableDiv {
+    height: 80%;
+    width: 80%;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    overflow: auto;
+    padding: 5px;
+}
+
+.searchDiv {
+    height: 100px;
+    width: 300px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    padding: 5px;
+}
+
+.mainDatatable {
+    background: #EDEDED;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
+}
+
+.mainDatatable th {
+    background: #F7F7F7;
+}
+
+.mainDatatable tr, .mainDatatable td {
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.mainDatatable tr {
+}
+
+.button {
+    border-radius: 2px;
+    border: 1px solid #CCCCCC;
+    padding: 5px;
+    margin: 10px;
+}
+
+.button:hover {
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
+}
+
+.searchButton {
+    opacity: 0.3;
+    height: 32px;
+    width: auto;
+    position: absolute;
+    top: 48px;
+    left: 40%;
+}
+
+.searchInput {
+    padding: 10px;
+    width: 95%;
+    border-radius: 5px;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
+}
+
+.searchInput:focus {
+    outline: none;
+}
+
+.searchText {
+    font-family: Papyrus,fantasy;
+    font-size: 48px;
+    color: #CCCCCC;
+    text-align: center;
+}

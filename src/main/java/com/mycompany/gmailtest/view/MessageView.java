@@ -37,7 +37,7 @@ import javax.faces.context.FacesContext;
  *
  * @author Anatolii
  */
-@ManagedBean(name = "message")
+@ManagedBean(name = "messageView")
 @SessionScoped
 public class MessageView implements Serializable {
 
@@ -50,7 +50,6 @@ public class MessageView implements Serializable {
     private static final String SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
     private static final String APP_NAME = "Gmail test";
     private static final String USER = "me";
-    private static final String CLIENT_SECRET_PATH = "C:" + File.separator + "var" + File.separator + "webapp" + File.separator + "images" + File.separator + "client_secret_956423263018-c4a8b50mv71v8n9adp1sdb3gt9i67qti.apps.googleusercontent.com.json";
     private static GoogleClientSecrets clientSecrets;
     private static final String callbackUrl = "http://localhost:8080/gmail_test/faces/gmail_auth.xhtml";
     private String redirectUrl = "http://localhost:8080/gmail_test/faces/gmail_auth.xhtml";
@@ -72,6 +71,7 @@ public class MessageView implements Serializable {
     public static void connectToApi(String[] args) throws IOException {
         httpTransport = new NetHttpTransport();
         jsonFactory = new JacksonFactory();
+        String CLIENT_SECRET_PATH = MessageView.class.getClassLoader().getResource("/client_secret.json").getPath();
         clientSecrets = GoogleClientSecrets.load(jsonFactory, new FileReader(CLIENT_SECRET_PATH));
         // Allow user to authorize via url.
         flow = new GoogleAuthorizationCodeFlow.Builder(
@@ -99,7 +99,7 @@ public class MessageView implements Serializable {
     }
 
     public void loadMessages() throws IOException {
-        if (updateData) {
+        if (updateData && !searchName.equals("")) {
             ListMessagesResponse messagesResponse = service.users().messages().list(USER).setQ(searchName).execute();
             messages = new ArrayList<>();
             while (messagesResponse.getMessages() != null) {
@@ -112,6 +112,7 @@ public class MessageView implements Serializable {
                     break;
                 }
             }
+            //System.out.println(MessageView.class.getResource("client_secret.apps.googleusercontent.com.json").getPath());
             System.out.println("Messages found: " + messages.size());
             messageList = new ArrayList<>();
             for (com.google.api.services.gmail.model.Message message : messages) {
@@ -147,6 +148,11 @@ public class MessageView implements Serializable {
         MessageDao messageDao = new MessageDao();
         List<Message> messages = messageDao.getMessages();
         return messages;
+    }
+    
+    public void deleteMessage(String id) {
+        MessageDao messageDao = new MessageDao();
+        messageDao.deleteMessage(id);
     }
 
     public String deleteAllMessages() {
