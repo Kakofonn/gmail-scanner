@@ -20,18 +20,22 @@ import org.hibernate.Transaction;
 public class MessageDao {
 
     public void addMessages(List<Message> messages) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        for (int i = 0; i < messages.size(); i++) {
-            Message message = messages.get(i);
-            session.save(message);
-            if (i % 100 == 0) {
-                session.flush();
-                session.clear();
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Transaction tx = session.beginTransaction();
+            for (int i = 0; i < messages.size(); i++) {
+                Message message = messages.get(i);
+                session.save(message);
+                if (i % 100 == 0) {
+                    session.flush();
+                    session.clear();
+                }
             }
+            tx.commit();
+            session.close();
+        } catch (Exception e) {
+            throw e;
         }
-        tx.commit();
-        session.close();
     }
 
     public List<Message> getMessages() {
@@ -47,7 +51,7 @@ public class MessageDao {
         }
         return messages;
     }
-    
+
     public void deleteMessages() {
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -59,7 +63,7 @@ public class MessageDao {
             throw e;
         }
     }
-    
+
     public void deleteMessage(String id) {
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();

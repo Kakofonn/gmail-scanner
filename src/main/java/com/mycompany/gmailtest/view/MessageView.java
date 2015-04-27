@@ -15,23 +15,20 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
-//import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.mycompany.gmailtest.dao.MessageDao;
 import com.mycompany.gmailtest.dto.Message;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -65,6 +62,8 @@ public class MessageView implements Serializable {
 
     public void getApiConnection() throws IOException {
         getConnection(authCode);
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         connected = true;
     }
 
@@ -87,7 +86,6 @@ public class MessageView implements Serializable {
     }
 
     public static void getConnection(String code) throws IOException {
-        //String code = null; 
         // Generate Credential using retrieved code.
         GoogleTokenResponse response = flow.newTokenRequest(code)
                 .setRedirectUri(callbackUrl).execute();
@@ -112,7 +110,6 @@ public class MessageView implements Serializable {
                     break;
                 }
             }
-            //System.out.println(MessageView.class.getResource("client_secret.apps.googleusercontent.com.json").getPath());
             System.out.println("Messages found: " + messages.size());
             messageList = new ArrayList<>();
             for (com.google.api.services.gmail.model.Message message : messages) {
@@ -165,9 +162,6 @@ public class MessageView implements Serializable {
     public static com.google.api.services.gmail.model.Message getMessage(Gmail service, String userId, String messageId)
             throws IOException {
         com.google.api.services.gmail.model.Message message = service.users().messages().get(userId, messageId).execute();
-
-        System.out.println("Message snippet: " + message.getSnippet());
-
         return message;
     }
 

@@ -9,13 +9,9 @@
     </h:head>
     <h:body>
         <h:panelGroup styleClass="searchDiv" >
-<!--            <h:outputText value="SEARCH..." styleClass="searchText" />-->
             <h:form>
                 <h:inputText value="#{messageView.searchName}" pt:placeholder="Search" styleClass="searchInput" />
                 <h:commandButton value="Search" action="#{messageView.startGmailService()}" styleClass="button searchButton" />
-<!--                <h:commandLink action="{messageView.startGmailService()}">
-                    <h:graphicImage value="resources/img/search_icon.png" styleClass="searchButton"/>
-                </h:commandLink>-->
             </h:form>
         </h:panelGroup>
     </h:body>
